@@ -12,7 +12,10 @@ SRCS := \
 	src/string/memcpy.c \
 	src/string/memmove.c \
 	src/string/memset.c \
-	src/string/memcmp.c
+	src/string/memcmp.c \
+	src/stdio/putchar.c \
+	src/stdio/puts.c \
+	src/stdlib/exit.c
 
 OBJS := $(SRCS:.c=.o)
 LIB  := libtlibc.a
@@ -22,6 +25,12 @@ LIB  := libtlibc.a
 all: $(LIB)
 
 src/string/%.o: src/string/%.c include/string.h include/stddef.h
+	$(CC) $(CFLAGS) -c $< -o $@
+
+src/stdio/%.o: src/stdio/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+src/stdlib/%.o: src/stdlib/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIB): $(OBJS)
