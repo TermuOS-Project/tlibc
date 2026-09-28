@@ -1,0 +1,2 @@
+libtlibc.a
+src/**/*.o
