@@ -15,7 +15,9 @@ SRCS := \
 	src/string/memcmp.c \
 	src/stdio/putchar.c \
 	src/stdio/puts.c \
+	src/stdio/printf.c \
 	src/stdlib/exit.c \
+	src/stdlib/malloc.c \
 	src/sys/syscall.c \
 	src/unistd/unistd.c
 
