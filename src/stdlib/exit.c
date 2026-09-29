@@ -1,5 +1,5 @@
 #include <stdlib.h>
-#include "../sysdep.h"
+#include <unistd.h>
 
 void exit(int code)
 {

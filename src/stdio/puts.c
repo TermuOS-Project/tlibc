@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <string.h>
-#include "../sysdep.h"
+#include <unistd.h>
 
 int puts(const char *s)
 {

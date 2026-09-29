@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "../sysdep.h"
+#include <unistd.h>
 
 int putchar(int c)
 {

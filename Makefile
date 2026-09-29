@@ -15,7 +15,9 @@ SRCS := \
 	src/string/memcmp.c \
 	src/stdio/putchar.c \
 	src/stdio/puts.c \
-	src/stdlib/exit.c
+	src/stdlib/exit.c \
+	src/sys/syscall.c \
+	src/unistd/unistd.c
 
 OBJS := $(SRCS:.c=.o)
 LIB  := libtlibc.a
@@ -31,6 +33,12 @@ src/stdio/%.o: src/stdio/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 src/stdlib/%.o: src/stdlib/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+src/sys/%.o: src/sys/%.c
+	$(CC) $(CFLAGS) -c $< -o $@
+
+src/unistd/%.o: src/unistd/%.c
 	$(CC) $(CFLAGS) -c $< -o $@
 
 $(LIB): $(OBJS)
