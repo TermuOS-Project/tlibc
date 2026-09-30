@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include <string.h>
-
-#define HEAP_SIZE (256 * 1024)
+#include <unistd.h>
+#include <stdint.h>
 
 typedef struct block {
     size_t size;
@@ -9,46 +9,69 @@ typedef struct block {
     struct block *next;
 } block_t;
 
-static unsigned char heap[HEAP_SIZE];
 static block_t *head;
 static int ready;
 
+static int heap_grow(size_t need)
+{
+    size_t total = need + sizeof(block_t) + 32;
+    total = (total + 0xFFF) & ~0xFFFul;
+
+    void *p = sbrk((long)total);
+    if (p == (void *)-1 || p == 0)
+        return -1;
+
+    block_t *b = (block_t *)p;
+    b->size = total - sizeof(block_t);
+    b->free = 1;
+    b->next = 0;
+
+    if (!head) {
+        head = b;
+    } else {
+        block_t *t = head;
+        while (t->next)
+            t = t->next;
+        t->next = b;
+    }
+    return 0;
+}
+
 static void heap_init(void)
 {
-    head = (block_t *)heap;
-    head->size = HEAP_SIZE - sizeof(block_t);
-    head->free = 1;
-    head->next = 0;
-    ready = 1;
+    if (heap_grow(4096) == 0)
+        ready = 1;
 }
 
 void *malloc(size_t n)
 {
     if (n == 0)
         return 0;
+    n = (n + 7u) & ~7u;
     if (!ready)
         heap_init();
+    if (!ready)
+        return 0;
 
-    /* align */
-    n = (n + 7u) & ~7u;
-
-    block_t *b = head;
-    while (b) {
-        if (b->free && b->size >= n) {
-            if (b->size >= n + sizeof(block_t) + 8) {
-                block_t *rest = (block_t *)((unsigned char *)b + sizeof(block_t) + n);
-                rest->size = b->size - n - sizeof(block_t);
-                rest->free = 1;
-                rest->next = b->next;
-                b->next = rest;
-                b->size = n;
+    for (;;) {
+        for (block_t *b = head; b; b = b->next) {
+            if (b->free && b->size >= n) {
+                if (b->size >= n + sizeof(block_t) + 8) {
+                    block_t *rest =
+                        (block_t *)((unsigned char *)b + sizeof(block_t) + n);
+                    rest->size = b->size - n - sizeof(block_t);
+                    rest->free = 1;
+                    rest->next = b->next;
+                    b->next = rest;
+                    b->size = n;
+                }
+                b->free = 0;
+                return (unsigned char *)b + sizeof(block_t);
             }
-            b->free = 0;
-            return (unsigned char *)b + sizeof(block_t);
         }
-        b = b->next;
+        if (heap_grow(n) != 0)
+            return 0;
     }
-    return 0;
 }
 
 void free(void *p)
