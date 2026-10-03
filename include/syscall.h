@@ -6,6 +6,7 @@
 #define SYS_CLOSE 3
 #define SYS_STAT 4
 #define SYS_BRK 12
+#define SYS_FB_PRESENT 13
 #define SYS_YIELD 24
 #define SYS_FB_INFO 50
 #define SYS_FB_CLEAR 51
