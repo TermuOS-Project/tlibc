@@ -20,6 +20,7 @@
 #define SYS_EXIT 60
 #define SYS_RTC_READ 62
 #define SYS_READDIR 63
+#define SYS_FB_BLIT 64
 #define SYS_UPTIME 201
 #define SYS_LSDRV 501
 
