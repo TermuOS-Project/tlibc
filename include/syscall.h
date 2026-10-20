@@ -15,9 +15,11 @@
 #define SYS_KBD_HASCHAR 54
 #define SYS_KBD_GETCHAR 55
 #define SYS_MOUSE_GET_STATE 56
+#define SYS_SPAWN 57
 #define SYS_FB_GETPIXEL 58
 #define SYS_MOUSE_SET_BOUNDS 59
 #define SYS_EXIT 60
+#define SYS_WAIT 61
 #define SYS_RTC_READ 62
 #define SYS_READDIR 63
 #define SYS_FB_BLIT 64

@@ -20,7 +20,8 @@ SRCS := \
 	src/stdlib/malloc.c \
 	src/sys/syscall.c \
 	src/unistd/unistd.c \
-	src/unistd/brk.c
+	src/unistd/brk.c \
+	src/unistd/spawn.c
 
 OBJS := $(SRCS:.c=.o)
 LIB  := libtlibc.a

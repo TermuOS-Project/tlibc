@@ -14,6 +14,8 @@ int close(int fd);
 void _exit(int code);
 void *brk(void *addr);
 void *sbrk(long incr);
+long spawn(const char *path);
+long waitpid(long pid);
 
 #ifdef __cplusplus
 }
