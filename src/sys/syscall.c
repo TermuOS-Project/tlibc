@@ -37,6 +37,17 @@ long __syscall3(long n, long a, long b, long c)
     return ret;
 }
 
+long __syscall4(long n, long a, long b, long c, long d)
+{
+    long ret;
+    register long r10 __asm__("r10") = d;
+    __asm__ volatile("syscall"
+                     : "=a"(ret)
+                     : "a"(n), "D"(a), "S"(b), "d"(c), "r"(r10)
+                     : "rcx", "r11", "memory");
+    return ret;
+}
+
 long __syscall5(long n, long a, long b, long c, long d, long e)
 {
     long ret;
